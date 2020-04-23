@@ -12,6 +12,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json.Serialization;
 
 namespace CourseLibrary.API
 {
@@ -32,6 +33,10 @@ namespace CourseLibrary.API
                 setupAction.ReturnHttpNotAcceptable = true;
 
             }).AddXmlDataContractSerializerFormatters()//overriding bad request to custom with code 422
+            .AddNewtonsoftJson(setupAction => {
+                setupAction.SerializerSettings.ContractResolver =
+                new CamelCasePropertyNamesContractResolver();
+            })
             .ConfigureApiBehaviorOptions(setupAction =>
             {
                 setupAction.InvalidModelStateResponseFactory = context =>
